@@ -1,4 +1,4 @@
-package Step.Week1;
+package Step.Week2;
 
 public class Day2LiveCoding {
     public static void countVowelsAndConsonants(String text) {

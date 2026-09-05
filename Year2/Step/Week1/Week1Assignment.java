@@ -41,7 +41,10 @@ public class Week1Assignment {
         if (original.length() != typed.length() && firstMismatch == -1) {
             firstMismatch = length;
         }
-        int total = Math.max(original.length(), typed.length());
+        int total = original.length();
+        if (typed.length() > total) {
+            total = typed.length();
+        }
         double accuracy = total == 0 ? 100.0 : matched * 100.0 / total;
         System.out.printf("Matched: %d/%d | Accuracy: %.2f%%", matched, total, accuracy);
         if (firstMismatch == -1) {

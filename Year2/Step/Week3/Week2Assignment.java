@@ -1,9 +1,4 @@
-package Step.Week2;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package Step.Week3;
 
 public class Week2Assignment {
     public static void checkPinLength(String pin) {
@@ -72,7 +67,9 @@ public class Week2Assignment {
         String cleaned = feedback.toLowerCase().replace('.', ' ').replace(',', ' ');
         String[] words = cleaned.trim().split("\\s+");
         String[] stopWords = {"the", "was", "and", "a", "is", "of", "in"};
-        Map<String, Integer> frequencies = new HashMap<>();
+        String[] uniqueWords = new String[words.length];
+        int[] counts = new int[words.length];
+        int uniqueCount = 0;
         for (String word : words) {
             boolean isStopWord = false;
             for (String stopWord : stopWords) {
@@ -81,14 +78,38 @@ public class Week2Assignment {
                     break;
                 }
             }
-            if (!isStopWord && !word.isEmpty()) {
-                frequencies.put(word, frequencies.getOrDefault(word, 0) + 1);
+            if (isStopWord || word.isEmpty()) {
+                continue;
+            }
+            int wordIndex = -1;
+            for (int i = 0; i < uniqueCount; i++) {
+                if (uniqueWords[i].equals(word)) {
+                    wordIndex = i;
+                    break;
+                }
+            }
+            if (wordIndex == -1) {
+                uniqueWords[uniqueCount] = word;
+                counts[uniqueCount] = 1;
+                uniqueCount++;
+            } else {
+                counts[wordIndex]++;
             }
         }
-        List<Map.Entry<String, Integer>> entries = new ArrayList<>(frequencies.entrySet());
-        entries.sort((first, second) -> second.getValue() - first.getValue());
-        for (Map.Entry<String, Integer> entry : entries) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+        for (int i = 0; i < uniqueCount - 1; i++) {
+            for (int j = i + 1; j < uniqueCount; j++) {
+                if (counts[j] > counts[i]) {
+                    int count = counts[i];
+                    counts[i] = counts[j];
+                    counts[j] = count;
+                    String word = uniqueWords[i];
+                    uniqueWords[i] = uniqueWords[j];
+                    uniqueWords[j] = word;
+                }
+            }
+        }
+        for (int i = 0; i < uniqueCount; i++) {
+            System.out.println(uniqueWords[i] + ": " + counts[i]);
         }
     }
 }
